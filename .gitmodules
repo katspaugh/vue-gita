@@ -1,0 +1,3 @@
+[submodule "gita"]
+	path = gita
+	url = git@github.com:gita/gita.git
