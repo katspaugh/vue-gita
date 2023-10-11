@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 
 const props = defineProps({
   chapterId: Number,
-  lastChapterId: Number,
+  lastChapterId: Number
 })
 
 const { chapterId = 0, lastChapterId = 0 } = toRefs(props)
@@ -16,7 +16,7 @@ const { chapterId = 0, lastChapterId = 0 } = toRefs(props)
       ← Chapter {{ chapterId - 1 }}
     </RouterLink>
 
-    <RouterLink to="/"> All chapters </RouterLink>
+    <RouterLink to="/">All chapters</RouterLink>
 
     <RouterLink :to="`/chapter-${chapterId + 1}`" v-if="chapterId < lastChapterId">
       Chapter {{ chapterId + 1 }} →
@@ -25,10 +25,10 @@ const { chapterId = 0, lastChapterId = 0 } = toRefs(props)
 </template>
 
 <style>
-  nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, toRefs } from 'vue'
+import { ref, computed } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import Fuse from 'fuse.js'
 import Sanscript from '@indic-transliteration/sanscript'
@@ -11,7 +11,7 @@ const props = defineProps({
 })
 
 const tooltip = ref('')
-const tooltipPosition = ref([ 0, 0 ])
+const tooltipPosition = ref([0, 0])
 
 const dictionary = computed(() => {
   const meanings = (props.meanings || '').split('; ')
@@ -42,13 +42,24 @@ const onClear = () => {
 
 <template>
   <div v-on-click-outside="onClear" className="container">
-    <p v-for="line, lineIndex in textLines" v-bind:key="lineIndex">
-      <span v-for="word, wordIndex in line" v-bind:key="word" @click="onWordClick" @focus="onWordClick" :tabIndex="/[^।\s0-9.]/.test(word) ? 1 : undefined">
+    <p v-for="(line, lineIndex) in textLines" v-bind:key="lineIndex">
+      <span
+        v-for="word in line"
+        v-bind:key="word"
+        @click="onWordClick"
+        @focus="onWordClick"
+        className="word"
+        :tabIndex="/[^।\s0-9.]/.test(word) ? 1 : undefined"
+      >
         {{ word }}
       </span>
     </p>
 
-    <div className="tooltip" v-if="tooltip" :style="`left: ${tooltipPosition[0]}px; top: ${tooltipPosition[1]}px`">
+    <div
+      className="tooltip"
+      v-if="tooltip"
+      :style="`left: ${tooltipPosition[0]}px; top: ${tooltipPosition[1]}px`"
+    >
       {{ tooltip }}
     </div>
   </div>
@@ -60,8 +71,12 @@ const onClear = () => {
 }
 
 @keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .tooltip {
@@ -75,7 +90,7 @@ const onClear = () => {
   z-index: 10;
 }
 
-span:focus {
+.word:focus {
   color: initial;
   background: yellow;
   border: 4px solid yellow;

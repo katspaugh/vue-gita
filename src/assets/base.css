@@ -1,3 +1,25 @@
+:root {
+  --background: white;
+  --text: #333;
+  --link-color: mediumseagreen;
+  --link-hover-color: darkgreen;
+  --link-visited-color: darkslategray;
+  --gradient: linear-gradient(to right, white, honeydew, white);
+  --border-color: #ccc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #222;
+    --text: #eee;
+    --link-color: lightgreen;
+    --link-hover-color: limegreen;
+    --link-visited-color: lightseagreen;
+    --gradient: linear-gradient(to right, #2f4345, #232938, #2f4345);
+    --border-color: #555;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -8,4 +30,63 @@
 
 body {
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--text);
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+a {
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+a:visited {
+  color: var(--link-visited-color);
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+h2 {
+  margin-bottom: 5rem;
+  padding: 0 1rem;
+}
+
+section {
+  font-size: 1.2em;
+  min-width: 40ex;
+  margin-bottom: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+header,
+footer,
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+main {
+  flex: 1;
+}
+
+header,
+footer {
+  background: var(--gradient);
 }

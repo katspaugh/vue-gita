@@ -2,11 +2,11 @@
 import { ref, computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import ChapterNav from './ChapterNav.vue'
-import Words from './Words.vue'
-import Waveform from './Waveform.vue'
+import AnnotatedText from './AnnotatedText.vue'
+import WaveformPlayer from './WaveformPlayer.vue'
 
-import allVerses from '../../gita/data/verse.json'
-import chapters from '../../gita/data/chapters.json'
+import allVerses from '../../public/gita/data/verse.json'
+import chapters from '../../public/gita/data/chapters.json'
 
 // Access the id parameter from the route
 const route = useRoute()
@@ -31,9 +31,9 @@ const lastChapterId = computed(() => chapters[chapters.length - 1].chapter_numbe
     <h2>{{ chapter.name }} / {{ chapter.name_transliterated }} / {{ chapter.name_meaning }}</h2>
 
     <section v-for="verse of verses" v-bind:key="verse.verse_number">
-      <Words :text="verse.text" :meanings="verse.word_meanings" />
+      <AnnotatedText :text="verse.text" :meanings="verse.word_meanings" />
 
-      <Waveform :chapterNumber="chapter.chapter_number" :verseNumber="verse.verse_number" />
+      <WaveformPlayer :chapterNumber="chapter.chapter_number" :verseNumber="verse.verse_number" />
     </section>
   </main>
 
@@ -41,44 +41,3 @@ const lastChapterId = computed(() => chapters[chapters.length - 1].chapter_numbe
     <ChapterNav :chapterId="chapterId" :lastChapterId="lastChapterId" />
   </footer>
 </template>
-
-<style>
-h1 {
-  margin-bottom: 1rem;
-}
-
-h2 {
-  margin-bottom: 5rem;
-  padding: 0 1rem;
-}
-
-section {
-  font-size: 1.2em;
-  min-width: 40ex;
-  margin-bottom: 4rem;
-  padding-bottom: 4rem;
-  border-bottom: 1px solid #ccc;
-}
-
-header,
-footer,
-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-}
-
-header, footer {
-  background: #eee;
-}
-
-header {
-  margin-bottom: 4rem;
-}
-
-footer {
-  margin-top: 4rem;
-}
-</style>
