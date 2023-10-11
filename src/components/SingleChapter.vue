@@ -3,6 +3,7 @@ import { ref, computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import ChapterNav from './ChapterNav.vue'
 import Words from './Words.vue'
+import Waveform from './Waveform.vue'
 
 import allVerses from '../../gita/data/verse.json'
 import chapters from '../../gita/data/chapters.json'
@@ -30,7 +31,9 @@ const lastChapterId = computed(() => chapters[chapters.length - 1].chapter_numbe
     <h2>{{ chapter.name }} / {{ chapter.name_transliterated }} / {{ chapter.name_meaning }}</h2>
 
     <section v-for="verse of verses" v-bind:key="verse.verse_number">
-      <Words :text="verse.text" :transliteration="verse.transliteration" :meanings="verse.word_meanings" />
+      <Words :text="verse.text" :meanings="verse.word_meanings" />
+
+      <Waveform :chapterNumber="chapter.chapter_number" :verseNumber="verse.verse_number" />
     </section>
   </main>
 

@@ -2,11 +2,11 @@
 import { ref, computed, toRefs } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import Fuse from 'fuse.js'
+import Sanscript from '@indic-transliteration/sanscript'
 import { splitLineWords } from '../utils/text'
 
 const props = defineProps({
   text: String,
-  transliteration: String,
   meanings: String
 })
 
@@ -14,16 +14,16 @@ const tooltip = ref('')
 const tooltipPosition = ref([ 0, 0 ])
 
 const dictionary = computed(() => {
-  const meanings = (props.meanings || '').split(';')
+  const meanings = (props.meanings || '').split('; ')
   return new Fuse(meanings)
 })
 
 const textLines = computed(() => splitLineWords(props.text || ''))
 
-const onWordClick = (event: Event, lineIndex: number, wordIndex: number) => {
-  const transliterations = splitLineWords(props.transliteration || '')
-  const word = transliterations[lineIndex]?.[wordIndex]?.trim()
-  const meaning = word ? dictionary.value.search(word) : null
+const onWordClick = (event: Event) => {
+  const word = (event.target as HTMLElement).innerText.trim()
+  const transliteratedWord = word && Sanscript.t(word, 'devanagari', 'iast')
+  const meaning = transliteratedWord ? dictionary.value.search(transliteratedWord) : null
 
   if (meaning) {
     const target = event.target as HTMLElement
@@ -43,7 +43,7 @@ const onClear = () => {
 <template>
   <div v-on-click-outside="onClear" className="container">
     <p v-for="line, lineIndex in textLines" v-bind:key="lineIndex">
-      <span v-for="word, wordIndex in line" v-bind:key="word" @click="onWordClick($event, lineIndex, wordIndex)" @focus="onWordClick($event, lineIndex, wordIndex)" :tabIndex="/[^।\s0-9.]/.test(word) ? 1 : undefined">
+      <span v-for="word, wordIndex in line" v-bind:key="word" @click="onWordClick" @focus="onWordClick" :tabIndex="/[^।\s0-9.]/.test(word) ? 1 : undefined">
         {{ word }}
       </span>
     </p>
@@ -72,6 +72,7 @@ const onClear = () => {
   position: fixed;
   background: #fff;
   animation: fade-in 200ms;
+  z-index: 10;
 }
 
 span:focus {
