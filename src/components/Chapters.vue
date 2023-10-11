@@ -9,7 +9,7 @@ import chapters from '../../gita/data/chapters.json'
 <template>
   <main>
     <ol>
-      <li v-for="chapter of chapters">
+      <li v-for="chapter of chapters" v-bind:key="chapter.id">
         <RouterLink :to="`/chapter-${chapter.chapter_number}`">
           {{ chapter.name }} / {{ chapter.name_transliterated }} / {{ chapter.name_meaning }}
         </RouterLink>

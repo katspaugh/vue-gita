@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, toRefs } from 'vue'
+import { vOnClickOutside } from '@vueuse/components'
 import Fuse from 'fuse.js'
-import throttle from 'lodash/throttle'
+import { splitLineWords } from '../utils/text'
 
 const props = defineProps({
+  text: String,
   transliteration: String,
   meanings: String
 })
@@ -16,39 +18,47 @@ const dictionary = computed(() => {
   return new Fuse(meanings)
 })
 
-const onHover = throttle((event: MouseEvent) => {
-  const target = event.target as HTMLElement
-  const word = target.innerText.trim()
+const textLines = computed(() => splitLineWords(props.text || ''))
 
-  const meaning = dictionary.value.search(word)
+const onWordClick = (event: Event, lineIndex: number, wordIndex: number) => {
+  const transliterations = splitLineWords(props.transliteration || '')
+  const word = transliterations[lineIndex]?.[wordIndex]?.trim()
+  const meaning = word ? dictionary.value.search(word) : null
+
   if (meaning) {
+    const target = event.target as HTMLElement
     const bbox = target.getBoundingClientRect()
-
     tooltip.value = meaning[0].item
     tooltipPosition.value = [bbox.left, bbox.bottom]
+  } else {
+    tooltip.value = ''
   }
-}, 200);
-
-const onLeave = () => {
-  tooltip.value = ''
 }
 
-const lines = computed(() => (props.transliteration || '').split('\n').slice(0, -1).map(line => line.split(' ')))
+const onClear = () => {
+  tooltip.value = ''
+}
 </script>
 
 <template>
-  <p v-for="line in lines">
-    <span v-for="word in line" @mouseenter="onHover" @mouseleave="onLeave" @click="onHover">
-      {{ word + ' ' }}
-    </span>
-  </p>
+  <div v-on-click-outside="onClear" className="container">
+    <p v-for="line, lineIndex in textLines" v-bind:key="lineIndex">
+      <span v-for="word, wordIndex in line" v-bind:key="word" @click="onWordClick($event, lineIndex, wordIndex)" @focus="onWordClick($event, lineIndex, wordIndex)" :tabIndex="/[^।\s0-9.]/.test(word) ? 1 : undefined">
+        {{ word }}
+      </span>
+    </p>
 
-  <div className="tooltip" v-if="tooltip" :style="`left: ${tooltipPosition[0]}px; top: ${tooltipPosition[1]}px`">
-   {{ tooltip }}
+    <div className="tooltip" v-if="tooltip" :style="`left: ${tooltipPosition[0]}px; top: ${tooltipPosition[1]}px`">
+      {{ tooltip }}
+    </div>
   </div>
 </template>
 
 <style>
+.container {
+  position: relative;
+}
+
 @keyframes fade-in {
   0% { opacity: 0; }
   100% { opacity: 1; }
@@ -59,12 +69,16 @@ const lines = computed(() => (props.transliteration || '').split('\n').slice(0, 
   border-radius: 4px;
   padding: 1rem;
   display: inline-block;
-  position: absolute;
+  position: fixed;
   background: #fff;
   animation: fade-in 200ms;
 }
 
-span:hover {
+span:focus {
+  color: initial;
   background: yellow;
+  border: 4px solid yellow;
+  border-radius: 4px;
+  margin: -4px;
 }
 </style>
