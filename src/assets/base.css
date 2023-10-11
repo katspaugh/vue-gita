@@ -1,6 +1,6 @@
 :root {
-  --background: white;
-  --text: #333;
+  --background-color: white;
+  --text-color: #333;
   --link-color: mediumseagreen;
   --link-hover-color: darkgreen;
   --link-visited-color: darkslategray;
@@ -10,8 +10,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #222;
-    --text: #eee;
+    --background-color: #222;
+    --text-color: #eee;
     --link-color: lightgreen;
     --link-hover-color: limegreen;
     --link-visited-color: lightseagreen;
@@ -32,8 +32,8 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background: var(--background);
-  color: var(--text);
+  background: var(--background-color);
+  color: var(--text-color);
 }
 
 #app {
@@ -64,14 +64,6 @@ h2 {
   padding: 0 1rem;
 }
 
-section {
-  font-size: 1.2em;
-  min-width: 40ex;
-  margin-bottom: 4rem;
-  padding-bottom: 4rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
 header,
 footer,
 main {
@@ -84,6 +76,7 @@ main {
 
 main {
   flex: 1;
+  padding: 1rem 2rem;
 }
 
 header,

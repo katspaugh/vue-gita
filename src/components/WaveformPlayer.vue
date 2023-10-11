@@ -61,7 +61,7 @@ const onClick = () => {
 <template>
   <div className="player">
     <button @click="onClick">
-      {{ isPlaying ? '⏸' : '▸' }}
+      {{ isPlaying ? '⏸️' : '▶️' }}
     </button>
     <div ref="container"></div>
   </div>
@@ -72,7 +72,6 @@ const onClick = () => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 3.5rem;
   gap: 1rem;
 }
 
@@ -83,13 +82,14 @@ const onClick = () => {
 .player button {
   border-radius: 100%;
   border: none;
-  padding: 1rem;
+  padding: 0;
   text-align: center;
   width: 50px;
   height: 50px;
-  font-size: 30px;
-  line-height: 20px;
-  font-family: sans-serif;
+  font-size: 25px;
+  line-height: 50px;
+  filter: grayscale(100%);
+  mix-blend-mode: color-dodge;
 }
 
 .player button:hover {

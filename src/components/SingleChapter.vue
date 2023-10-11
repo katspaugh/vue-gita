@@ -34,6 +34,10 @@ const lastChapterId = computed(() => chapters[chapters.length - 1].chapter_numbe
       <AnnotatedText :text="verse.text" :meanings="verse.word_meanings" />
 
       <WaveformPlayer :chapterNumber="chapter.chapter_number" :verseNumber="verse.verse_number" />
+
+      <p>
+        {{ verse.word_meanings.split('; ').join('\n') }}
+      </p>
     </section>
   </main>
 
@@ -41,3 +45,26 @@ const lastChapterId = computed(() => chapters[chapters.length - 1].chapter_numbe
     <ChapterNav :chapterId="chapterId" :lastChapterId="lastChapterId" />
   </footer>
 </template>
+
+<style>
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  font-size: 1.2em;
+  width: 60ex;
+  margin-bottom: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+@media (max-width: 800px) {
+  section {
+    width: 100%;
+  }
+}
+
+section p {
+  white-space: pre-wrap;
+}
+</style>

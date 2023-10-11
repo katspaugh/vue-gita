@@ -30,6 +30,15 @@ header h1 {
 ol {
   margin: 0;
   padding: 0;
-  max-width: 30vw;
+}
+
+ol li {
+  margin-left: 2rem;
+}
+
+@media (min-width: 1000px) {
+  ol {
+    max-width: 30vw;
+  }
 }
 </style>

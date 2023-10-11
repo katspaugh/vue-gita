@@ -80,12 +80,12 @@ const onClear = () => {
 }
 
 .tooltip {
-  border: 2px double #333;
+  border: 2px double var(--text-color);
   border-radius: 4px;
   padding: 1rem;
   display: inline-block;
   position: fixed;
-  background: #fff;
+  background: var(--background-color);
   animation: fade-in 200ms;
   z-index: 10;
 }
