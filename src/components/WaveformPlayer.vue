@@ -89,7 +89,6 @@ const onClick = () => {
   font-size: 25px;
   line-height: 50px;
   filter: grayscale(100%);
-  mix-blend-mode: color-dodge;
 }
 
 .player button:hover {
